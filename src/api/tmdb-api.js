@@ -114,3 +114,8 @@ export const getMovie = (args) => {
          throw error
       });
     };
+
+    export const getSimilarMovies = (id) =>
+    fetch(`https://api.themoviedb.org/3/movie/${id}/similar?api_key=${import.meta.env.VITE_TMDB_KEY}`)
+        .then((res) => res.json())
+        .then((json) => json.results);

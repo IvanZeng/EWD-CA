@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState }  from "react";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -9,6 +9,8 @@ import NavigationIcon from "@mui/icons-material/Navigation";
 import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
 import MovieReviews from '../movieReviews'
+import SimilarMovieList from "../similarMovieList";
+
 
 const styles = {  
   chipSet: {
@@ -25,9 +27,10 @@ const styles = {
   },
   fab: { 
     position: "fixed",
-    top: 50,
+    bottom: 2,
     right: 2,
   },
+  
 };
 
 const MovieDetails = ( {movie}) => {
@@ -35,7 +38,7 @@ const MovieDetails = ( {movie}) => {
 
   return (
     <>
-      <Typography variant="h5" component="h3">
+      <Typography variant="h4" component="h3" textAlign="center">
         Overview
       </Typography>
 
@@ -65,15 +68,20 @@ const MovieDetails = ( {movie}) => {
         />
         <Chip label={`Released: ${movie.release_date}`} />
         </Paper>
-        <Fab    
-        color="secondary"
-        variant="extended"
-        onClick={() =>setDrawerOpen(true)}
-        sx={styles.fab}
-      >
+
+        <Paper>
+        <Typography variant="h4" component="h4" textAlign="center">
+          Similar movies to {movie.title}
+        </Typography>
+        <SimilarMovieList movie={movie} />
+      </Paper>
+      
+      
+
+        <Fab color="secondary" variant="extended" onClick={() =>setDrawerOpen(true)} sx={styles.fab}>
         <NavigationIcon />
-        Reviews
-      </Fab>
+           Reviews
+        </Fab>
       <Drawer anchor="top" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
         <MovieReviews movie={movie} />
       </Drawer>
@@ -81,4 +89,4 @@ const MovieDetails = ( {movie}) => {
   );
 };
 
-export default  MovieDetails ;
+export default  MovieDetails;

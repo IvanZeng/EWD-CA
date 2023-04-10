@@ -21,7 +21,7 @@ const genreFiltering = {
   condition: genreFilter,
 };
 
-const HomePage = (props) => {
+const TopRatedMoviesPage = (props) => {
   const { data, error, isLoading, isError } = useQuery("discover3", getTopRatedMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
@@ -66,4 +66,4 @@ const HomePage = (props) => {
   );
 };
 
-export default HomePage;
+export default TopRatedMoviesPage;
