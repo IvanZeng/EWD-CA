@@ -10,6 +10,10 @@ import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
 import MovieReviews from '../movieReviews'
 import SimilarMovieList from "../similarMovieList";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const styles = {
   chipSet: {
@@ -70,17 +74,20 @@ const MovieDetails = ({ movie }) => {
         <Chip label={`Released: ${movie.release_date}`} />
       </Paper>
 
-      <Paper marginBottom={2}>
-        <Typography
-          variant="h4"
-          component="h4"
-          textAlign="center"
-          gutterBottom
-        >
-          Similar movies to {movie.title}
-        </Typography>
-        <SimilarMovieList movie={movie} />
-      </Paper>
+      <Accordion defaultExpanded={true}>
+       <AccordionSummary
+         expandIcon={<ExpandMoreIcon />}
+         aria-controls="similar-movies-content"
+         id="similar-movies-header"
+       >
+       <Typography variant="h4" component="h4" textAlign="center">
+         Similar movies to {movie.title}
+       </Typography>
+       </AccordionSummary>
+       <AccordionDetails>
+       <SimilarMovieList movie={movie} />
+       </AccordionDetails>
+      </Accordion>
 
       <Fab
         color="secondary"
