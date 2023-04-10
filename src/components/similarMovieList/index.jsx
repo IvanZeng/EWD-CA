@@ -35,7 +35,7 @@ const SimilarMovieList = ({ movie }) => {
   return (
     <div style={styles.container}>
       {data.length ? (
-        data.slice(0, 10).map((m) => (
+        data.slice(0, 12).map((m) => (
           <div key={m.id} style={styles.card}>
             <MovieCard
               movie={m}

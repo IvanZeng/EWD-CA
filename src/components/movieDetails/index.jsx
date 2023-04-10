@@ -1,4 +1,4 @@
-import React, { useEffect, useState }  from "react";
+import React, { useEffect, useState } from "react";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -11,8 +11,7 @@ import Drawer from "@mui/material/Drawer";
 import MovieReviews from '../movieReviews'
 import SimilarMovieList from "../similarMovieList";
 
-
-const styles = {  
+const styles = {
   chipSet: {
     display: "flex",
     justifyContent: "center",
@@ -23,26 +22,28 @@ const styles = {
     margin: 0,
   },
   chipLabel: {
-    margin: 0.5,
+    margin: 1.5,
   },
-  fab: { 
+  fab: {
     position: "fixed",
-    bottom: 2,
-    right: 2,
+    bottom: 20,
+    right: 20,
   },
-  
+  container: {
+    padding: "1rem",
+  },
 };
 
-const MovieDetails = ( {movie}) => {
+const MovieDetails = ({ movie }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
-    <>
-      <Typography variant="h4" component="h3" textAlign="center">
+    <div style={styles.container}>
+      <Typography variant="h4" component="h3" textAlign="center" gutterBottom>
         Overview
       </Typography>
 
-      <Typography variant="h6" component="p">
+      <Typography variant="h6" component="p" gutterBottom>
         {movie.overview}
       </Typography>
 
@@ -52,11 +53,11 @@ const MovieDetails = ( {movie}) => {
         </li>
         {movie.genres.map((g) => (
           <li key={g.name}>
-            <Chip label={g.name}  />
+            <Chip label={g.name} />
           </li>
         ))}
       </Paper>
-      <Paper component="ul" sx={styles.chipSet}>
+      <Paper component="ul" sx={styles.chipSet} marginBottom={2}>
         <Chip icon={<AccessTimeIcon />} label={`${movie.runtime} min.`} />
         <Chip
           icon={<MonetizationIcon />}
@@ -67,26 +68,38 @@ const MovieDetails = ( {movie}) => {
           label={`${movie.vote_average} (${movie.vote_count}`}
         />
         <Chip label={`Released: ${movie.release_date}`} />
-        </Paper>
+      </Paper>
 
-        <Paper>
-        <Typography variant="h4" component="h4" textAlign="center">
+      <Paper marginBottom={2}>
+        <Typography
+          variant="h4"
+          component="h4"
+          textAlign="center"
+          gutterBottom
+        >
           Similar movies to {movie.title}
         </Typography>
         <SimilarMovieList movie={movie} />
       </Paper>
-      
-      
 
-        <Fab color="secondary" variant="extended" onClick={() =>setDrawerOpen(true)} sx={styles.fab}>
+      <Fab
+        color="secondary"
+        variant="extended"
+        onClick={() => setDrawerOpen(true)}
+        sx={styles.fab}
+      >
         <NavigationIcon />
-           Reviews
-        </Fab>
-      <Drawer anchor="top" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <MovieReviews movie={movie} />
-      </Drawer>
-    </>
-  );
-};
-
-export default  MovieDetails;
+        Reviews
+      </Fab>
+      <Drawer
+        anchor="top"
+        open={drawerOpen}
+        onClose={()  => setDrawerOpen(false)}
+        >
+          <MovieReviews movie={movie} />
+        </Drawer>
+      </div>
+      );
+    };
+    
+    export default MovieDetails;
