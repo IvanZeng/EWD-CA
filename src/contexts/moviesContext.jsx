@@ -4,7 +4,7 @@ export const MoviesContext = React.createContext(null);
 
 const MoviesContextProvider = (props) => {
   const [myReviews, setMyReviews] = useState( {} ) ; // NEW
-  const [favourites, setFavourites] = useState([]);
+  const [favourites, setFavourites] = useState([]);  // Movies
   const [toWatches, setToWatches] = useState([]);
 
   const addToFavourites = (movie) => {
@@ -36,6 +36,7 @@ const MoviesContextProvider = (props) => {
   const addReview = (movie, review) => {   // NEW
     setMyReviews( {...myReviews, [movie.id]: review } )
   };
+
 
   return (
     <MoviesContext.Provider

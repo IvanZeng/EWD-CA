@@ -14,6 +14,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import MovieCastList from "../movieCast";
 
 const styles = {
   chipSet: {
@@ -73,6 +74,22 @@ const MovieDetails = ({ movie }) => {
         />
         <Chip label={`Released: ${movie.release_date}`} />
       </Paper>
+
+      <Accordion defaultExpanded={true}>
+       <AccordionSummary
+         expandIcon={<ExpandMoreIcon />}
+         aria-controls="cast-movies-content"
+         id="cast-movies-header"
+       >
+       <Typography variant="h4" component="h4" textAlign="center">
+        Movie Actors of {movie.title}
+       </Typography>
+       </AccordionSummary>
+       <AccordionDetails>
+       <MovieCastList movie={movie} />
+       </AccordionDetails>
+      </Accordion>
+
 
       <Accordion defaultExpanded={true}>
        <AccordionSummary
