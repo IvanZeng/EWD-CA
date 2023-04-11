@@ -4,6 +4,7 @@ import { Card, CardContent, CardMedia, Grid, Typography } from "@mui/material";
 import Spinner from "../spinner";
 import img from "../../images/film-poster-placeholder.png";
 import { getMovieCast } from "../../api/tmdb-api";
+import { Link } from "react-router-dom";
 
 const styles = {
   container: {
@@ -39,14 +40,16 @@ const MovieCastList = ({ movie }) => {
       {data.map((cast) => (
         <div key={cast.id} style={styles.card}>
           <Card>
-            <CardMedia
-              sx={styles.media}
-              image={
-                cast.profile_path
-                  ? `https://image.tmdb.org/t/p/w500/${cast.profile_path}`
-                  : img
-              }
-            />
+          <Link to={`/actors/${cast.id}`}>
+              <CardMedia
+                sx={styles.media}
+                image={
+                  cast.profile_path
+                    ? `https://image.tmdb.org/t/p/w500/${cast.profile_path}`
+                    : img
+                }
+              />
+            </Link>
             <CardContent>
               <Grid container>
                 <Grid item>
