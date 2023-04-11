@@ -26,6 +26,12 @@ const styles = {
 };
 
 const ActorDetails = ({ actor }) => {
+  function calculateAge(birthday) {
+    const ageDiffMs = Date.now() - new Date(birthday).getTime();
+    const ageDate = new Date(ageDiffMs);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  }
+
   return (
     <div style={styles.container}>
       <Typography variant="h4" component="h3" textAlign="center" gutterBottom>
@@ -40,6 +46,15 @@ const ActorDetails = ({ actor }) => {
         <li>
           Birth: <Chip label={actor.birthday} />
         </li>
+        {actor.deathday ? (
+          <li>
+            Deathday: <Chip label={actor.deathday} />
+          </li>
+        ) : (
+          <li>
+            Age: <Chip label={calculateAge(actor.birthday)} />
+          </li>
+        )}
         <li>
           From: <Chip label={actor.place_of_birth} />
         </li>
