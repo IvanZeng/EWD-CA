@@ -44,11 +44,11 @@ const MovieDetails = ({ movie }) => {
 
   return (
     <div style={styles.container}>
-      <Typography variant="h4" component="h3" textAlign="center" gutterBottom>
+      <Typography variant="h6" component="h3" textAlign="center" gutterBottom>
         Overview
       </Typography>
 
-      <Typography variant="h6" component="p" gutterBottom>
+      <Typography variant="h7" component="p" gutterBottom>
         {movie.overview}
       </Typography>
 
@@ -81,7 +81,7 @@ const MovieDetails = ({ movie }) => {
          aria-controls="cast-movies-content"
          id="cast-movies-header"
        >
-       <Typography variant="h4" component="h4" textAlign="center">
+       <Typography variant="h6" component="h4" textAlign="center">
         Movie Actors of {movie.title}
        </Typography>
        </AccordionSummary>
@@ -97,7 +97,7 @@ const MovieDetails = ({ movie }) => {
          aria-controls="similar-movies-content"
          id="similar-movies-header"
        >
-       <Typography variant="h4" component="h4" textAlign="center">
+       <Typography variant="h6" component="h4" textAlign="center">
          Similar movies to {movie.title}
        </Typography>
        </AccordionSummary>

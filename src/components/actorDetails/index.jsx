@@ -35,11 +35,11 @@ const ActorDetails = ({ actor }) => {
 
   return (
     <div style={styles.container}>
-      <Typography variant="h4" component="h3" textAlign="center" gutterBottom>
+      <Typography variant="h6" component="h3" textAlign="center" gutterBottom>
         Biography
       </Typography>
 
-      <Typography variant="h6" component="p" gutterBottom>
+      <Typography variant="h7" component="p" gutterBottom>
         {actor.biography}
       </Typography>
 
@@ -70,7 +70,7 @@ const ActorDetails = ({ actor }) => {
          aria-controls="movies-actor-content"
          id="movies-actor-content"
        >
-       <Typography variant="h4" component="h4" textAlign="center">
+       <Typography variant="h6" component="h4" textAlign="center">
          Movies from {actor.name}
        </Typography>
        </AccordionSummary>
