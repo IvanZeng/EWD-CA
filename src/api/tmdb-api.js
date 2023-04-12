@@ -239,3 +239,16 @@ export const getSimilarMovies = (id) =>
         total_results: allActors.length,
       };
     };
+
+    export const getActorMovies = (id) => {
+      return fetch(
+        `https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+      )
+        .then((res) => res.json())
+        .then((json) => {
+          return json.cast;
+        })
+        .catch((error) => {
+          throw error
+       });
+    };

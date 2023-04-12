@@ -6,6 +6,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ActorMoviesList from "../actorMoviesList";
 
 const styles = {
   chipSet: {
@@ -62,6 +63,22 @@ const ActorDetails = ({ actor }) => {
           Popularity: <Chip label={`★ ${parseInt(actor.popularity)}`} />
         </li>
       </Paper>
+
+      <Accordion defaultExpanded={true}>
+       <AccordionSummary
+         expandIcon={<ExpandMoreIcon />}
+         aria-controls="movies-actor-content"
+         id="movies-actor-content"
+       >
+       <Typography variant="h4" component="h4" textAlign="center">
+         Movies from {actor.name}
+       </Typography>
+       </AccordionSummary>
+       <AccordionDetails>
+       <ActorMoviesList actor={actor } />
+       </AccordionDetails>
+      </Accordion>
+
     </div>
   );
 };
