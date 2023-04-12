@@ -2,24 +2,22 @@ import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation  } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 
 const styles = {
   title: {
     flexGrow: 1,
   },
   appbar: {
-    // background: 'none',
+    // background: 'gray',
   },
-  // offset: theme.mixins.toolbar,
 };
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
@@ -27,27 +25,24 @@ const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 const SiteHeader = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
+  const location = useLocation();
+  const [selectedMenu, setSelectedMenu] = useState(location.pathname);
 
   const menuOptions = [
     { label: "Home", path: "/" },
     { label: "Upcoming", path: "/movies/upcoming" },
-    { label: "Favorites", path: "/movies/favourites" },
-    { label: "Must Watches", path: "/movies/mustWatches" },
-    { label: "Top Rated", path: "/movies/toprated" },
     { label: "Now Playing ", path: "/movies/nowplaying" },
+    { label: "Top Rated", path: "/movies/toprated" },
+    { label: "Must Watches", path: "/movies/mustWatches" },
+    { label: "Favorites Movies", path: "/movies/favourites" },
     { label: "Actors", path: "/actors" },
     { label: "Favorite Actors", path: "/actors/favourites" },
   ];
 
   const handleMenuSelect = (pageURL) => {
     navigate(pageURL);
-  };
-
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
   };
 
   return (
@@ -62,59 +57,46 @@ const SiteHeader = () => {
           </Typography>
           {isMobile ? (
             <>
-              <IconButton
-                aria-label="menu"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-                size="large"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={open}
-                onClose={() => setAnchorEl(null)}
-              >
-                {menuOptions.map((opt) => (
-                  <MenuItem
-                    key={opt.label}
-                    onClick={() => handleMenuSelect(opt.path)}
-                  >
-                    {opt.label}
-                  </MenuItem>
-                ))}
-              </Menu>
+              <FormControl>
+                <Select
+                  id="menu-select"
+                  value={selectedMenu}
+                  onChange={(e) => {
+                    setSelectedMenu(e.target.value);
+                    handleMenuSelect(e.target.value);
+                  }}
+                >
+                  {menuOptions.map((opt) => (
+                    <MenuItem key={opt.label} value={opt.path}>
+                      {opt.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </>
           ) : (
             <>
-              {menuOptions.map((opt) => (
-                <Button
-                  key={opt.label}
-                  color="inherit"
-                  onClick={() => handleMenuSelect(opt.path)}
+              <FormControl>
+                <Select
+                  id="menu-select"
+                  value={selectedMenu}
+                  onChange={(e) => {
+                    setSelectedMenu(e.target.value);
+                    handleMenuSelect(e.target.value);
+                  }}
                 >
-                  {opt.label}
-                </Button>
-              ))}
+                  {menuOptions.map((opt) => (
+                    <MenuItem key={opt.label} value={opt.path}>
+                      {opt.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </>
           )}
         </Toolbar>
       </AppBar>
       <Offset />
-
-      {/* <div className={classes.offset} /> */}
     </>
   );
 };
