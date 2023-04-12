@@ -13,10 +13,20 @@ import { MoviesContext } from "../../contexts/moviesContext";
 import img from "../../images/film-poster-placeholder.png";
 
 const styles = {
-  card: { maxWidth: 345 },
+  card: { maxWidth: 345, borderRadius: 12 },
   media: { height: 500 },
   avatar: {
     backgroundColor: "rgb(255, 0, 0)",
+  },
+  header: {
+    paddingBottom: 0,
+  },
+  content: {
+    paddingTop: 0,
+    paddingBottom: 1,
+  },
+  actions: {
+    paddingTop: 0,
   },
 };
 
@@ -42,7 +52,7 @@ export default function ActorCard({ actor, action }) {
           ) : null
         }
         title={
-          <Typography variant="h6" component="p">
+          <Typography variant="h5" component="p">
             {actor.name}
           </Typography>
         }
@@ -57,20 +67,20 @@ export default function ActorCard({ actor, action }) {
           }
         />
       </Link>
-      <CardContent>
-        <Typography variant="h5" component="p">
+      <CardContent sx={styles.content}>
+        <Typography variant="subtitle1" component="p">
           Department: {actor.known_for_department}
         </Typography>
-        <Typography variant="h5" component="p">
-        Popularity ★ : {parseInt(actor.popularity)}
+        <Typography variant="subtitle1" component="p">
+          Popularity: {parseInt(actor.popularity)}★
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
+      <CardActions disableSpacing sx={styles.actions}>
         {action(actor)}
 
         <Link to={`/actors/${actor.id}`}>
           <Button variant="outlined" size="medium" color="primary">
-            More Info ...
+            More Information
           </Button>
         </Link>
       </CardActions>
