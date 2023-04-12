@@ -1,15 +1,26 @@
-export const getMovies = () => {
-  return fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=1`
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(response.json().message);
+export const getMovies = async () => {
+  const totalPages = 5; 
+  const allMovies = [];
+  try {
+    for (let page = 1; page <= totalPages; page++) {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
+      );
+      if (!response.ok) {
+        throw new Error((await response.json()).message);
+      }
+      const data = await response.json();
+      allMovies.push(...data.results);
     }
-    return response.json();
-  })
-    .catch((error) => {
-      throw error
-    });
+  } catch (error) {
+    throw error;
+  }
+  return {
+    page: 1,
+    results: allMovies,
+    total_pages: 1,
+    total_results: allMovies.length,
+  };
 };
 
 export const getMovie = (args) => {
@@ -29,18 +40,29 @@ export const getMovie = (args) => {
     });
 };
 
-export const getUpcomingMovies = () => {
-  return fetch(
-    `https://api.themoviedb.org/3/movie/upcoming?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(response.json().message);
+export const getUpcomingMovies = async () => {
+  const totalPages = 5;
+  const allMovies = [];
+  try {
+    for (let page = 1; page <= totalPages; page++) {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/upcoming?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
+      );
+      if (!response.ok) {
+        throw new Error((await response.json()).message);
+      }
+      const data = await response.json();
+      allMovies.push(...data.results);
     }
-    return response.json();
-  })
-    .catch((error) => {
-      throw error
-    });
+  } catch (error) {
+    throw error;
+  }
+  return {
+    page: 1,
+    results: allMovies,
+    total_pages: 1,
+    total_results: allMovies.length,
+  };
 };
 
 export const getGenres = async () => {
@@ -87,32 +109,54 @@ export const getMovieReviews = (id) => {
     });
 };
 
-export const getTopRatedMovies = () => {
-  return fetch(
-    `https://api.themoviedb.org/3/movie/top_rated?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(response.json().message);
+export const getTopRatedMovies = async () => {
+  const totalPages = 5; 
+  const allMovies = [];
+  try {
+    for (let page = 1; page <= totalPages; page++) {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/top_rated?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
+      );
+      if (!response.ok) {
+        throw new Error((await response.json()).message);
+      }
+      const data = await response.json();
+      allMovies.push(...data.results);
     }
-    return response.json();
-  })
-    .catch((error) => {
-      throw error
-    });
+  } catch (error) {
+    throw error;
+  }
+  return {
+    page: 1,
+    results: allMovies,
+    total_pages: 1,
+    total_results: allMovies.length,
+  };
 };
 
-export const getNowPlayingMovies = () => {
-  return fetch(
-    `https://api.themoviedb.org/3/movie/now_playing?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(response.json().message);
+export const getNowPlayingMovies = async () => {
+  const totalPages = 5; 
+  const allMovies = [];
+  try {
+    for (let page = 1; page <= totalPages; page++) {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/now_playing?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
+      );
+      if (!response.ok) {
+        throw new Error((await response.json()).message);
+      }
+      const data = await response.json();
+      allMovies.push(...data.results);
     }
-    return response.json();
-  })
-    .catch((error) => {
-      throw error
-    });
+  } catch (error) {
+    throw error;
+  }
+  return {
+    page: 1,
+    results: allMovies,
+    total_pages: 1,
+    total_results: allMovies.length,
+  };
 };
 
 export const getSimilarMovies = (id) =>
