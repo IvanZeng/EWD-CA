@@ -47,7 +47,7 @@ const ActorMoviesList = ({ actor }) => {
         ))
       ) : (
         <Typography variant="subtitle2" padding={2}>
-          Sorry, no similar movies for now!
+          Sorry, no related movies for now!
         </Typography>
       )}
     </div>

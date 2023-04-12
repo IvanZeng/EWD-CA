@@ -13,11 +13,10 @@ const styles = {
     flexWrap: "wrap",
     justifyContent: "space-around",
     overflow: "auto",
-    maxHeight: "310vh",
   },
   gridList: {
     width: 450,
-    height: '100vh',
+    height: '270vh',
   },
 };
 
