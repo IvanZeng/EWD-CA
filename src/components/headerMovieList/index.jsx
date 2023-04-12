@@ -5,6 +5,7 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 
+
 const styles = {
   root: {
     display: "flex",
@@ -18,11 +19,10 @@ const styles = {
 const Header = (props ) => {
   const title = props.title
 
+
   return (
     <Paper component="div" sx={styles.root}>
-      <IconButton
-        aria-label="go back"
-      >
+      <IconButton aria-label="go back" onClick={() => history.goBack()}>
         <ArrowBackIcon color="primary" fontSize="large" />
       </IconButton>
 
@@ -31,6 +31,7 @@ const Header = (props ) => {
       </Typography>
       <IconButton
         aria-label="go forward"
+        onClick={() => history.goForward()}
       >
         <ArrowForwardIcon color="primary" fontSize="large" />
       </IconButton>

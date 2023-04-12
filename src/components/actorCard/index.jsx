@@ -7,6 +7,8 @@ import CardHeader from "@mui/material/CardHeader";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import FemaleIcon from "@mui/icons-material/Female";
+import MaleIcon from "@mui/icons-material/Male";
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import { MoviesContext } from "../../contexts/moviesContext";
@@ -30,8 +32,18 @@ const styles = {
   },
 };
 
+const getGenderIcon = (gender) => {
+  switch (gender) {
+    case 1:
+      return <FemaleIcon />;
+    case 2:
+      return <MaleIcon />;
+    default:
+      return "Not Specified";
+  }
+};
+
 export default function ActorCard({ actor, action }) {
-  
   const { favouriteActors, addToFavouriteActors } = useContext(MoviesContext);
 
   if (favouriteActors.find((id) => id === actor.id)) {
@@ -73,6 +85,9 @@ export default function ActorCard({ actor, action }) {
         </Typography>
         <Typography variant="subtitle1" component="p">
           Popularity: {parseInt(actor.popularity)}★
+        </Typography>
+        <Typography variant="subtitle1" component="p">
+          Gender: {getGenderIcon(actor.gender)}
         </Typography>
       </CardContent>
       <CardActions disableSpacing sx={styles.actions}>

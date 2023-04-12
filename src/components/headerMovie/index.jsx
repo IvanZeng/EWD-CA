@@ -39,9 +39,11 @@ const MovieHeader = (props) => {
   }
 
 
+
+
   return (
     <Paper component="div" sx={styles.root}>
-      <IconButton aria-label="go back">
+      <IconButton aria-label="go back" onClick={() => history.goBack()}>
         <ArrowBackIcon color="primary" fontSize="large" />
       </IconButton>
 
@@ -72,7 +74,10 @@ const MovieHeader = (props) => {
         <br />
         <span>{`${movie.tagline}`} </span>
       </Typography>
-      <IconButton aria-label="go forward">
+      <IconButton
+        aria-label="go forward"
+        onClick={() => history.goForward()}
+      >
         <ArrowForwardIcon color="primary" fontSize="large" />
       </IconButton>
     </Paper>

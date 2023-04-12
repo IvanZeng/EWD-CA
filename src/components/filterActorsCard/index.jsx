@@ -17,6 +17,9 @@ const styles = {
     minWidth: 220,
     backgroundColor: "rgb(255, 255, 255)",
   },
+  genderSelect: {
+    marginTop: 10,
+  },
 };
 
 export default function FilterActorsCard(props) {
@@ -27,6 +30,10 @@ export default function FilterActorsCard(props) {
 
   const handleTextChange = (e, props) => {
     handleUserInput(e, "name", e.target.value);
+  };
+
+  const handleGenderChange = (e) => {
+    handleUserInput(e, "gender", e.target.value);
   };
 
   return (
