@@ -13,6 +13,10 @@ export const departmentFilter = function (actor, value) {
   );
 };
 
+export const genderFilter = function (actor, value) {
+  return value === "" || actor.gender === parseInt(value, 10);
+};
+
 const styles = {
   root: {
     backgroundColor: "#bfbfbf",

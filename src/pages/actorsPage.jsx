@@ -6,6 +6,7 @@ import { getActors } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
 import ActorFilterUI, {
   nameFilter,
+  genderFilter,
 } from "../components/actorFilterUI";
 import AddToFavouriteActorsIcon from "../components/cardIcons/addToFavouriteActors";
 
@@ -15,11 +16,17 @@ const nameFiltering = {
   condition: nameFilter,
 };
 
+const genderFiltering = {
+  name: "gender",
+  value: "",
+  condition: genderFilter,
+};
+
 const ActorsPage = (props) => {
   const { data, error, isLoading, isError } = useQuery("actors", getActors);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
-    [nameFiltering]
+    [nameFiltering, genderFiltering]
   );
 
   if (isLoading) {
@@ -32,7 +39,9 @@ const ActorsPage = (props) => {
 
   const changeFilterValues = (type, value) => {
     const changedFilter = { name: type, value: value };
-    const updatedFilterSet = [changedFilter];
+    const updatedFilterSet = filterValues.map((filter) =>
+      filter.name === type ? { ...filter, value: value } : filter
+    );
     setFilterValues(updatedFilterSet);
   };
 
@@ -52,6 +61,12 @@ const ActorsPage = (props) => {
         onFilterValuesChange={changeFilterValues}
         nameFilter={filterValues[0].value}
       />
+
+      <ActorFilterUI
+        onFilterValuesChange={changeFilterValues}
+        nameFilter={filterValues.find((filter) => filter.name === "name").value}
+        genderFilter={filterValues.find((filter) => filter.name === "gender").value}
+      />;
     </>
   );
 };

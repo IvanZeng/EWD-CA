@@ -5,7 +5,7 @@ import { useQueries } from "react-query";
 import { getActor } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import useFiltering from "../hooks/useFiltering";
-import ActorFilterUI, { nameFilter } from "../components/actorFilterUI";
+import ActorFilterUI, { nameFilter, genderFilter, } from "../components/actorFilterUI";
 import RemoveFromFavouriteActors from "../components/cardIcons/removeFromFavouriteActors";
 
 const nameFiltering = {
@@ -14,11 +14,17 @@ const nameFiltering = {
   condition: nameFilter,
 };
 
+const genderFiltering = {
+  name: "gender",
+  value: "",
+  condition: genderFilter,
+};
+
 const FavouriteActorsPage = () => {
   const { favouriteActors: actorIds } = useContext(MoviesContext);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
-    [nameFiltering]
+    [nameFiltering, genderFiltering]
   );
 
   // Create an array of queries and run them in parallel.
@@ -45,7 +51,9 @@ const FavouriteActorsPage = () => {
 
   const changeFilterValues = (type, value) => {
     const changedFilter = { name: type, value: value };
-    const updatedFilterSet = [changedFilter];
+    const updatedFilterSet = filterValues.map((filter) =>
+      filter.name === type ? { ...filter, value: value } : filter
+    );
     setFilterValues(updatedFilterSet);
   };
 
@@ -67,6 +75,12 @@ const FavouriteActorsPage = () => {
         onFilterValuesChange={changeFilterValues}
         nameFilter={filterValues[0].value}
       />
+
+      <ActorFilterUI
+        onFilterValuesChange={changeFilterValues}
+        nameFilter={filterValues.find((filter) => filter.name === "name").value}
+        genderFilter={filterValues.find((filter) => filter.name === "gender").value}
+      />;
     </>
   );
 };

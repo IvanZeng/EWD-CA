@@ -4,9 +4,9 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import FormControl from "@mui/material/FormControl";
-import { useQuery } from "react-query";
-import Spinner from "../spinner";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
 
 const styles = {
   root: {
@@ -16,9 +16,6 @@ const styles = {
     margin: 1,
     minWidth: 220,
     backgroundColor: "rgb(255, 255, 255)",
-  },
-  genderSelect: {
-    marginTop: 10,
   },
 };
 
@@ -53,6 +50,21 @@ export default function FilterActorsCard(props) {
             variant="filled"
             onChange={handleTextChange}
           />
+
+          <InputLabel id="gender-select-label">Gender</InputLabel>
+          <Select
+            labelId="gender-select-label"
+            id="gender-select"
+            value={props.genderFilter}
+            label="Gender"
+            onChange={handleGenderChange}
+            sx={styles.formControl}
+          >
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value={1}>Female</MenuItem>
+            <MenuItem value={2}>Male</MenuItem>
+          </Select>
+
         </CardContent>
       </Card>
     </>
