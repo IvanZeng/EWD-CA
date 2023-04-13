@@ -22,6 +22,10 @@ const genderFiltering = {
   condition: genderFilter,
 };
 
+const sortByPopularity = (a, b) => {
+  return b.popularity - a.popularity;
+};
+
 const ActorsPage = (props) => {
   const { data, error, isLoading, isError } = useQuery("actors", getActors);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
@@ -46,7 +50,11 @@ const ActorsPage = (props) => {
   };
 
   const actors = data ? data.results : [];
-  const displayedActors = filterFunction(actors);
+  let displayedActors = filterFunction(actors);
+
+  if (filterValues[1] && filterValues[1].name === "sort") {
+    displayedActors = displayedActors.sort(sortByPopularity);
+  }
 
   return (
     <>
@@ -59,14 +67,9 @@ const ActorsPage = (props) => {
       />
       <ActorFilterUI
         onFilterValuesChange={changeFilterValues}
-        nameFilter={filterValues[0].value}
-      />
-
-      <ActorFilterUI
-        onFilterValuesChange={changeFilterValues}
         nameFilter={filterValues.find((filter) => filter.name === "name").value}
         genderFilter={filterValues.find((filter) => filter.name === "gender").value}
-      />;
+      />
     </>
   );
 };

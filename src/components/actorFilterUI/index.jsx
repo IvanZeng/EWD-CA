@@ -32,7 +32,7 @@ const styles = {
 const ActorFilterUI = ({
   onFilterValuesChange,
   nameFilter,
-  departmentFilter,
+  genderFilter,
 }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -54,7 +54,7 @@ const ActorFilterUI = ({
         <FilterCard
           onUserInput={onFilterValuesChange}
           nameFilter={nameFilter}
-          departmentFilter={departmentFilter}
+          genderFilter={genderFilter}
         />
       </Drawer>
     </>
