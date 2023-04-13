@@ -9,6 +9,7 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
+import { useAuth } from "../../contexts/AuthProvider";
 
 const styles = {
   title: {
@@ -37,6 +38,7 @@ const SiteHeader = () => {
     { label: "Favorites Movies", path: "/movies/favourites" },
     { label: "Actors", path: "/actors" },
     { label: "Favorite Actors", path: "/actors/favourites" },
+    { label: "Logout", path: "logout" },
   ];
 
   const isPathInMenuOptions = menuOptions.some(
@@ -52,7 +54,22 @@ const SiteHeader = () => {
   }, [location.pathname, isPathInMenuOptions]);
 
   const handleMenuSelect = (pageURL) => {
-    navigate(pageURL);
+    if (pageURL === "logout") {
+      handleLogout();
+    } else {
+      navigate(pageURL);
+    }
+  };
+
+  const { auth, signOut } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.log(error);
+    }
+    navigate("/login");
   };
 
   return (

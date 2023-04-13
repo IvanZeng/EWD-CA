@@ -7,6 +7,7 @@ export const useAuth = () => useContext(AuthContext);
 
 const login = (email, password) =>
   supabase.auth.signInWithPassword({ email, password });
+  const signOut = () => supabase.auth.signOut();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -17,6 +18,9 @@ const AuthProvider = ({ children }) => {
       const currentUser = supabase.auth.user();
       if (currentUser) {
         setUser(currentUser);
+      } else if (event === "SIGNED_OUT") {
+        setUser(null);
+        setAuth(false);
       }
     };
 
@@ -37,7 +41,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login }}>
+    <AuthContext.Provider value={{ user, login, signOut }}>
       {children}
     </AuthContext.Provider>
   );
