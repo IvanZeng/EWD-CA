@@ -54,43 +54,61 @@ export default function FilterMoviesCard(props) {
     handleUserImput(e, "genre", e.target.value);
   };
 
+  const handleRateChange = (e) => {
+    handleUserImput(e, "rating", e.target.value);
+  };
+
   return (
     <>
-    <Card sx={styles.root} variant="outlined">
-      <CardContent>
-        <Typography variant="h5" component="h1">
-          <FilterAltIcon fontSize="large" />
-          Filter the movies.
-        </Typography>
-        <TextField
-          sx={styles.formControl}
-          id="filled-search"
-          label="Search field"
-          type="search"
-          value={props.titleFilter}
-          variant="filled"
-          onChange={handleTextChange}
-        />
-        <FormControl sx={styles.formControl}>
-          <InputLabel id="genre-label">Genre</InputLabel>
-          <Select
-            labelId="genre-label"
-            id="genre-select"
-            value={props.genreFilter}
-            onChange={handleGenreChange}
-          >
-            {genres.map((genre) => {
-              return (
-                <MenuItem key={genre.id} value={genre.id}>
-                  {genre.name}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </FormControl>
-      </CardContent>
-    </Card>
-    <Card sx={styles.root} variant="outlined">
+      <Card sx={styles.root} variant="outlined">
+        <CardContent>
+          <Typography variant="h5" component="h1">
+            <FilterAltIcon fontSize="large" />
+            Filter the movies.
+          </Typography>
+          <TextField
+            sx={styles.formControl}
+            id="filled-search"
+            label="Search field"
+            type="search"
+            value={props.titleFilter}
+            variant="filled"
+            onChange={handleTextChange}
+          />
+          <FormControl sx={styles.formControl}>
+            <InputLabel id="genre-label">Genre</InputLabel>
+            <Select
+              labelId="genre-label"
+              id="genre-select"
+              value={props.genreFilter}
+              onChange={handleGenreChange}
+            >
+              {genres.map((genre) => {
+                return (
+                  <MenuItem key={genre.id} value={genre.id}>
+                    {genre.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+          <FormControl sx={styles.formControl}>
+            <InputLabel id="rating-label">Ratings</InputLabel>
+            <Select
+              labelId="rating-label"
+              id="rating-select"
+              value={props.rateFilter}
+              onChange={handleRateChange}
+            >
+              <MenuItem value={0}>All Ratings</MenuItem>
+              <MenuItem value={3}>High Rating</MenuItem>
+              <MenuItem value={2}>Medium Rating</MenuItem>
+              <MenuItem value={1}>Low Rating</MenuItem>
+            </Select>
+          </FormControl>
+        </CardContent>
+      </Card>
+      <Card sx={styles.root} variant="outlined">
         <CardContent>
           <Typography variant="h5" component="h1">
             <SortIcon fontSize="large" />
@@ -98,6 +116,6 @@ export default function FilterMoviesCard(props) {
           </Typography>
         </CardContent>
       </Card>
-      </>
+    </>
   );
 }
