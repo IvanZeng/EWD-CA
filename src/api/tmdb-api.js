@@ -1,27 +1,41 @@
-export const getMovies = async () => {
-  const totalPages = 5; 
-  const allMovies = [];
-  try {
-    for (let page = 1; page <= totalPages; page++) {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
-      );
+// export const getMovies = async () => {
+//   const totalPages = 5; 
+//   const allMovies = [];
+//   try {
+//     for (let page = 1; page <= totalPages; page++) {
+//       const response = await fetch(
+//         `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
+//       );
+//       if (!response.ok) {
+//         throw new Error((await response.json()).message);
+//       }
+//       const data = await response.json();
+//       allMovies.push(...data.results);
+//     }
+//   } catch (error) {
+//     throw error;
+//   }
+//   return {
+//     page: 1,
+//     results: allMovies,
+//     total_pages: 1,
+//     total_results: allMovies.length,
+//   };
+// };
+
+  export const getMovies = (page = 1) => {
+    return fetch(
+      `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
+    ).then((response) => {
       if (!response.ok) {
-        throw new Error((await response.json()).message);
+        throw new Error(response.json().message);
       }
-      const data = await response.json();
-      allMovies.push(...data.results);
-    }
-  } catch (error) {
-    throw error;
-  }
-  return {
-    page: 1,
-    results: allMovies,
-    total_pages: 1,
-    total_results: allMovies.length,
+      return response.json();
+    })
+      .catch((error) => {
+        throw error
+      });
   };
-};
 
 export const getMovie = (args) => {
   // console.log(args)
