@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -13,6 +13,8 @@ import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import { MoviesContext } from "../../contexts/moviesContext";
 import img from "../../images/film-poster-placeholder.png";
+import { useAuth } from "../../contexts/AuthProvider";
+import { checkActorInFavourites } from "../../supabase/supabaseClient";
 
 const styles = {
   card: { maxWidth: 345, borderRadius: 12 },
@@ -44,20 +46,27 @@ const getGenderIcon = (gender) => {
 };
 
 export default function ActorCard({ actor, action }) {
-  const { favouriteActors, addToFavouriteActors } = useContext(MoviesContext);
+  const { addToFavouriteActors } = useContext(MoviesContext);
+  const { user } = useAuth();
+  const [isFavourite, setIsFavourite] = useState(false);
 
-  if (favouriteActors.find((id) => id === actor.id)) {
-    actor.favouriteActor = true;
-  } else {
-    actor.favouriteActor = false;
-  }
+  useEffect(() => {
+    const fetchFavouriteStatus = async () => {
+      if (user) {
+        const isFav = await checkActorInFavourites(user.id, actor.id);
+        setIsFavourite(isFav);
+      }
+    };
+
+    fetchFavouriteStatus();
+  }, [user, actor.id]);
 
   return (
     <Card sx={styles.card}>
       <CardHeader
         sx={styles.header}
         avatar={
-          actor.favouriteActor ? (
+          isFavourite ? (
             <Avatar sx={styles.avatar}>
               <FavoriteIcon />
             </Avatar>

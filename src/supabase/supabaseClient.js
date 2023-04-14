@@ -51,4 +51,52 @@ export async function checkMovieInFavourites(id, movieId) {
     }
   };
 
+  export const addActorToFavourites = async (userId, actorId) => {
+    const { data, error } = await supabase
+      .from('favourite_actors')
+      .insert([{ user_id: userId, actor_id: actorId }]);
+    return { data, error };
+  };
+
+  export const removeActorFromFavourites = async (userId, actorId) => {
+    const { data, error } = await supabase
+      .from('favourite_actors')
+      .delete()
+      .eq('user_id', userId)
+      .eq('actor_id', actorId);
+    return { data, error };
+  };
+
+  export const getFavouriteActors = async (userId) => {
+    const { data, error, status } = await supabase
+      .from('favourite_actors')
+      .select('actor_id')
+      .eq('user_id', userId);
+
+    if (error) {
+      console.error('getFavouriteActors error:', error, 'Status:', status);
+    }
+
+    return { data, error };
+  };
+
+  export async function checkActorInFavourites(id, actorId) {
+    try {
+      const { data, error } = await supabase
+        .from("favourite_actors")
+        .select("actor_id")
+        .eq("user_id", id)
+        .eq("actor_id", actorId);
+
+      if (error) {
+        throw error;
+      }
+
+      return data.length > 0;
+    } catch (error) {
+      console.error("Error checking actor in favourites:", error);
+      return false;
+    }
+  }
+
 export { supabase }

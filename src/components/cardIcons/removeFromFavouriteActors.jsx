@@ -1,24 +1,31 @@
-import React, { useContext } from "react";
+import React from "react";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { MoviesContext } from "../../contexts/moviesContext";
+import { useAuth } from "../../contexts/AuthProvider";
+import { removeActorFromFavourites  } from "../../supabase/supabaseClient";
 
-const RemoveFromFavouriteActorsIcon = ({ actor }) => {
-  const context = useContext(MoviesContext);
+  const RemoveFromFavouriteActorsIcon  = ({ actor, refreshKey, setRefreshKey }) => {
+    const { user, favouriteActors, setFavouriteActors } = useAuth();
 
-  const onUserRequest = (e) => {
+    const onUserRequest = async (e) => {
     e.preventDefault();
-    context.removeFromFavouriteActors(actor);
+    const { data, error } = await removeActorFromFavourites(user.id, actor.id);
+
+    if (error) {
+    } else {
+      setFavouriteActors(favouriteActors.filter((m) => m.id !== actor.id));
+      setRefreshKey(refreshKey + 1);
+    }
   };
 
-return (
-  <IconButton
-    aria-label="remove from favorite actors"
-    onClick={onUserRequest}
-  >
-    <DeleteIcon color="primary" fontSize="large" />
-  </IconButton>
-);
+  return (
+    <IconButton
+      aria-label="remove actor from favorites"
+      onClick={onUserRequest}
+    >
+      <DeleteIcon color="primary" fontSize="large" />
+    </IconButton>
+  );
 };
 
 export default RemoveFromFavouriteActorsIcon;

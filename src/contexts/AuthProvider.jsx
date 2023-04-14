@@ -14,6 +14,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [auth, setAuth] = useState(false);
   const [favouriteMovies, setFavouriteMovies] = useState([]);
+  const [favouriteActors, setFavouriteActors] = useState([]);
 
 useEffect(() => {
   const handleSession = async (event, session) => {
@@ -26,9 +27,16 @@ useEffect(() => {
         .select("*")
         .eq("user_id", currentUser.id);
 
+        const { data: actorsData } = await supabase
+        .from('favourite_actors')
+        .select('*')
+        .eq('user_id', currentUser.id);
+
       setFavouriteMovies(moviesData ?? []);
+      setFavouriteActors(actorsData ?? []);
     } else {
       setFavouriteMovies([]);
+      setFavouriteActors([]);
     }
   };
 
@@ -67,6 +75,8 @@ useEffect(() => {
         signOut,
         favouriteMovies,
         setFavouriteMovies,
+        favouriteActors, 
+        setFavouriteActors,
       }}
     >
       {children}
