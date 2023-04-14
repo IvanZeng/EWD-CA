@@ -1,5 +1,5 @@
 import React from "react";
-import FilterPeopleCard from "../components/filterPeopleCard";
+import FilterActorCard from "../components/filterActorCard";
 import { MemoryRouter } from "react-router";
 import { action } from "@storybook/addon-actions";
 import { QueryClientProvider, QueryClient } from "react-query";
@@ -15,8 +15,8 @@ const queryClient = new QueryClient({
 });
 
 export default {
-  title: "Actors Page/FilterPeopleCard",
-  component: FilterPeopleCard,
+  title: "Actors Page/FilterActorCard",
+  component: FilterActorCard,
   decorators: [
     (Story) => <MemoryRouter initialEntries={["/"]}>{Story()}</MemoryRouter>,
     (Story) => (
@@ -26,6 +26,6 @@ export default {
 };
 
 export const Basic = () => {
-  return <FilterPeopleCard onUserInput={action("filter input")} />;
+  return <FilterActorCard onUserInput={action("filter input")} />;
 };
 Basic.storyName = "Default";

@@ -1,17 +1,17 @@
 import React from "react";
 import PeopleDetails from "../components/peopleDetails";
-import SamplePeople from "./samplePeopleData";
+import SampleActor from "../sampleActorCardData";
 import { MemoryRouter } from "react-router";
 
 export default {
-  title: "Actors Page/PeopleDetails",
-  component: PeopleDetails,
+  title: "Actors Page/ActorDetails",
+  component: ActorDetails,
   decorators: [
     (Story) => <MemoryRouter initialEntries={["/"]}>{Story()}</MemoryRouter>,
 
   ],
 };
 
-export const Basic = () => <PeopleDetails people={SamplePeople} />;
+export const Basic = () => <ActorDetails actor={SampleActor} />;
 
 Basic.storyName = "Default";

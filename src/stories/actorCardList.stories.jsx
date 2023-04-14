@@ -1,29 +1,29 @@
 import React from "react";
-import PeopleList from "../components/peopleList";
-import SamplePeople from "./samplePeopleData";
+import ActorList from "../components/actorList";
+import SampleActor from "../sampleActorCardData";
 import { MemoryRouter } from "react-router";
 import { action } from "@storybook/addon-actions";
 import Grid from "@material-ui/core/Grid";
 
 export default {
-  title: "Actors Page/PeopleList",
-  component: PeopleList,
+  title: "Actors Page/ActorList",
+  component: ActorList,
   decorators: [
     (Story) => <MemoryRouter initialEntries={["/"]}>{Story()}</MemoryRouter>,
   ],
 };
 
 export const Basic = () => {
-  const people = [
-    { ...SamplePeople, id: 1 },
-    { ...SamplePeople, id: 2 },
-    { ...SamplePeople, id: 3 },
-    { ...SamplePeople, id: 4 },
+  const actor = [
+    { ...SampleActor, id: 1 },
+    { ...SampleActor, id: 2 },
+    { ...SampleActor, id: 3 },
+    { ...SampleActor, id: 4 },
   ];
   return (
     <Grid container spacing={5}>
-      <PeopleList
-        people={people}
+      <ActorList
+        actor={actor}
       />
     </Grid>
   );

@@ -1,17 +1,17 @@
 import React from "react";
-import PeopleHeader from "../components/headerPeople";
-import SamplePeople from "./samplePeopleData";
+import ActorHeader from "../components/headerActor";
+import SampleActor from "../sampleActorCardData";
 import { MemoryRouter } from "react-router";
 import { action } from "@storybook/addon-actions";
 
 export default {
-  title: "Actors Page/PeopleHeader",
-  component: PeopleHeader,
+  title: "Actors Page/ActorHeader",
+  component: ActorHeader,
   decorators: [
     (Story) => <MemoryRouter initialEntries={["/"]}>{Story()}</MemoryRouter>,
   ],
 };
 
-export const Basic = () => <PeopleHeader people={SamplePeople} />;
+export const Basic = () => <ActorHeader actor={SampleActor} />;
 
 Basic.storyName = "Default";
