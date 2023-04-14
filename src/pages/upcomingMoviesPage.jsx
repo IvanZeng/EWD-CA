@@ -107,8 +107,8 @@ const UpcomingMoviesPage = (props) => {
     <>
       <PageTemplate
         title="Upcoming Movies"
-        movies = {displayedMovies}
-        action = {(movie) => {
+        movies={displayedMovies}
+        action={(movie) => {
           return <AddToPlaylistAddIcon movie={movie} />
         }}
       />
@@ -118,25 +118,47 @@ const UpcomingMoviesPage = (props) => {
         genreFilter={filterValues[1].value}
         rateFilter={filterValues[2].value}
       />
-            <div className="footerFill"></div>
+      <div className="footerFill"></div>
       <div className="footer">
         <div className="footerCol">
           <Button
             variant="contained"
+            color="primary"
+            style={{ margin: '5px', fontSize: '0.9rem' }}
+            onClick={() => setPage((old) => Math.max(old - 10, 1))}
+            disabled={page <= 10}
+          >
+            Previous 10 Pages
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ margin: '5px', fontSize: '0.9rem' }}
             onClick={() => setPage((old) => Math.max(old - 1, 1))}
             disabled={page === 1}
           >
             Previous Page
-          </Button>{' '}
+          </Button>
         </div>
         <div className="footerCol">{renderPageNumbers()}</div>
         <div className="footerCol">
           <Button
             variant="contained"
+            color="primary"
+            style={{ margin: '5px', fontSize: '0.9rem' }}
             onClick={() => setPage((old) => (old < totalPages ? old + 1 : old))}
             disabled={page === totalPages}
           >
             Next Page
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ margin: '5px', fontSize: '0.9rem' }}
+            onClick={() => setPage((old) => Math.min(old + 10, totalPages))}
+            disabled={page > totalPages - 10}
+          >
+            Next 10 Pages
           </Button>
         </div>
       </div>

@@ -55,7 +55,7 @@ const TopRatedMoviesPage = (props) => {
 
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
-    [titleFiltering, genreFiltering,rateFiltering]
+    [titleFiltering, genreFiltering, rateFiltering]
   );
 
   if (isLoading) {
@@ -123,20 +123,42 @@ const TopRatedMoviesPage = (props) => {
         <div className="footerCol">
           <Button
             variant="contained"
+            color="primary"
+            style={{ margin: '5px', fontSize: '0.9rem' }}
+            onClick={() => setPage((old) => Math.max(old - 10, 1))}
+            disabled={page <= 10}
+          >
+            Previous 10 Pages
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ margin: '5px', fontSize: '0.9rem' }}
             onClick={() => setPage((old) => Math.max(old - 1, 1))}
             disabled={page === 1}
           >
             Previous Page
-          </Button>{' '}
+          </Button>
         </div>
         <div className="footerCol">{renderPageNumbers()}</div>
         <div className="footerCol">
           <Button
             variant="contained"
+            color="primary"
+            style={{ margin: '5px', fontSize: '0.9rem' }}
             onClick={() => setPage((old) => (old < totalPages ? old + 1 : old))}
             disabled={page === totalPages}
           >
             Next Page
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ margin: '5px', fontSize: '0.9rem' }}
+            onClick={() => setPage((old) => Math.min(old + 10, totalPages))}
+            disabled={page > totalPages - 10}
+          >
+            Next 10 Pages
           </Button>
         </div>
       </div>
