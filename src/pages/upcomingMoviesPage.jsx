@@ -10,6 +10,9 @@ import MovieFilterUI, {
   rateFilter,
 } from "../components/movieFilterUI";
 import AddToPlaylistAddIcon from '../components/cardIcons/addToWatch'
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import '../pages/style.css';
 
 const titleFiltering = {
   name: "title",
@@ -36,10 +39,23 @@ const rateFiltering = {
 
 
 const UpcomingMoviesPage = (props) => {
-  const { data, error, isLoading, isError } = useQuery("discover2", getUpcomingMovies);
+  const [page, setPage] = React.useState(1);
+  const {
+    isLoading,
+    isError,
+    error,
+    data,
+    isFetching,
+    isPreviousData,
+  } = useQuery({
+    queryKey: ['discover2', page],
+    queryFn: () => getUpcomingMovies(page),
+    keepPreviousData: true,
+  });
+
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
-    [titleFiltering, genreFiltering,rateFiltering]
+    [titleFiltering, genreFiltering, rateFiltering],
   );
 
   if (isLoading) {
@@ -65,23 +81,66 @@ const UpcomingMoviesPage = (props) => {
   const movies = data ? data.results : [];
   const displayedMovies = filterFunction(movies);
 
+  const totalPages = data ? data.total_pages : 1;
+
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    const start = Math.max(1, page - 2);
+    const end = Math.min(totalPages, page + 2);
+
+    for (let i = start; i <= end; i++) {
+      pageNumbers.push(
+        <Chip
+          key={i}
+          label={i}
+          color={i === page ? 'primary' : 'default'}
+          onClick={() => setPage(i)}
+          style={{ margin: '0 5px' }}
+        />,
+      );
+    }
+
+    return pageNumbers;
+  };
 
   return (
     <>
-    <PageTemplate
-      title="Upcoming Movies"
-      movies={displayedMovies}
-      action={(movie) => {
-        return <AddToPlaylistAddIcon movie={movie} />
-      }}
-    />
-    <MovieFilterUI
-      onFilterValuesChange={changeFilterValues}
-      titleFilter={filterValues[0].value}
-      genreFilter={filterValues[1].value}
-      rateFilter={filterValues[2].value}
-    />
-  </>
+      <PageTemplate
+        title="Upcoming Movies"
+        movies = {displayedMovies}
+        action = {(movie) => {
+          return <AddToPlaylistAddIcon movie={movie} />
+        }}
+      />
+      <MovieFilterUI
+        onFilterValuesChange={changeFilterValues}
+        titleFilter={filterValues[0].value}
+        genreFilter={filterValues[1].value}
+        rateFilter={filterValues[2].value}
+      />
+            <div className="footerFill"></div>
+      <div className="footer">
+        <div className="footerCol">
+          <Button
+            variant="contained"
+            onClick={() => setPage((old) => Math.max(old - 1, 1))}
+            disabled={page === 1}
+          >
+            Previous Page
+          </Button>{' '}
+        </div>
+        <div className="footerCol">{renderPageNumbers()}</div>
+        <div className="footerCol">
+          <Button
+            variant="contained"
+            onClick={() => setPage((old) => (old < totalPages ? old + 1 : old))}
+            disabled={page === totalPages}
+          >
+            Next Page
+          </Button>
+        </div>
+      </div>
+    </>
   );
 };
 export default UpcomingMoviesPage;
