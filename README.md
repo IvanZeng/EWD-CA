@@ -155,9 +155,10 @@ Except for login and registration, other functions are protected。
 > Must watch movie table
 ![][sp4]
 
-###### Deployment (if relevant)
-> URL： https://ewd-ca-ivanzeng.vercel.app/login
-> Useremail:ivan_zq@foxmail.com      Password:aaaaaa
+#### Deployment (if relevant)
+> URL： ewd-ca-ivanzeng.vercel.app
++
+> Useremail:ivan_zq@foxmail.com   ;   Password:aaaaaa
 ![][deploy]
 
 ## Additional Information.
