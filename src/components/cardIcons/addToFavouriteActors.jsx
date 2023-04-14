@@ -38,7 +38,7 @@ const AddToFavouriteActorsIcon = ({ actor }) => {
         anchorOrigin={{ vertical: "center", horizontal: "center" }}
       >
         <Alert onClose={() => setOpenSnackbar(false)} severity="success">
-          Movie added to favorites!
+          actor added to favorites!
         </Alert>
       </Snackbar>
     </>

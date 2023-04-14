@@ -155,6 +155,11 @@ Except for login and registration, other functions are protected。
 > Must watch movie table
 ![][sp4]
 
+###### Deployment (if relevant)
+> URL： https://ewd-ca-ivanzeng.vercel.app/login
+> Useremail:ivan_zq@foxmail.com      Password:aaaaaa
+![][deploy]
+
 ## Additional Information.
 
 [ Briefly explain any other aspects of your app's design or implementation that is non-standard and worthy of mention.]
@@ -181,3 +186,4 @@ Except for login and registration, other functions are protected。
 [sp2]: ./images/sp2.png
 [sp3]: ./images/sp3.png
 [sp4]: ./images/sp4.png
+[deploy]: ./images/deploy.png
