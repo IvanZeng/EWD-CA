@@ -15,30 +15,38 @@ const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(false);
   const [favouriteMovies, setFavouriteMovies] = useState([]);
   const [favouriteActors, setFavouriteActors] = useState([]);
+  const [mustWatchMovies, setMustWatchMovies] = useState([]);
 
-useEffect(() => {
-  const handleSession = async (event, session) => {
-    const currentUser = session?.user ?? null;
-    setUser(currentUser);
+  useEffect(() => {
+    const handleSession = async (event, session) => {
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
 
-    if (currentUser) {
-      const { data: moviesData } = await supabase
-        .from("favourite_movies")
-        .select("*")
-        .eq("user_id", currentUser.id);
+      if (currentUser) {
+        const { data: moviesData } = await supabase
+          .from("favourite_movies")
+          .select("*")
+          .eq("user_id", currentUser.id);
 
         const { data: actorsData } = await supabase
-        .from('favourite_actors')
-        .select('*')
-        .eq('user_id', currentUser.id);
+          .from('favourite_actors')
+          .select('*')
+          .eq('user_id', currentUser.id);
 
-      setFavouriteMovies(moviesData ?? []);
-      setFavouriteActors(actorsData ?? []);
-    } else {
-      setFavouriteMovies([]);
-      setFavouriteActors([]);
-    }
-  };
+        const { data: mustmoviesData } = await supabase
+          .from('mustwatch_movies')
+          .select('*')
+          .eq('user_id', currentUser.id);
+
+        setFavouriteMovies(moviesData ?? []);
+        setFavouriteActors(actorsData ?? []);
+        setMustWatchMovies(mustmoviesData ?? []);
+      } else {
+        setFavouriteMovies([]);
+        setFavouriteActors([]);
+        setMustWatchMovies([]);
+      }
+    };
 
     const fetchUser = async () => {
       const currentUser = supabase.auth.session?.user;
@@ -75,8 +83,10 @@ useEffect(() => {
         signOut,
         favouriteMovies,
         setFavouriteMovies,
-        favouriteActors, 
+        favouriteActors,
         setFavouriteActors,
+        mustWatchMovies, 
+        setMustWatchMovies,
       }}
     >
       {children}

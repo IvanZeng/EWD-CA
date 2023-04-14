@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -14,6 +14,8 @@ import img from "../../images/film-poster-placeholder.png";
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import { MoviesContext } from "../../contexts/moviesContext";
+import { useAuth } from "../../contexts/AuthProvider";
+import { checkMovieInMustWatches } from "../../supabase/supabaseClient";
 
 const styles = {
   card: { maxWidth: 345, borderRadius: 12 },
@@ -27,20 +29,27 @@ const styles = {
 };
 
 export default function UpcomingMovieCard({ movie, action }) {
-  const { toWatches, addToWatches } = useContext(MoviesContext);
+  const { addToWatches } = useContext(MoviesContext);
+  const { user } = useAuth();
+  const [isInMustWatches, setIsInMustWatches] = useState(false);
 
-  if (toWatches.find((id) => id === movie.id)) {
-    movie.toWatches = true;
-  } else {
-    movie.toWatches = false;
-  }
+  useEffect(() => {
+    const checkMustWatches = async () => {
+      if (user) {
+        const isInMustList = await checkMovieInMustWatches(user.id, movie.id);
+        setIsInMustWatches(isInMustList);
+      }
+    };
+
+    checkMustWatches();
+  }, [user, movie.id]);
 
   return (
     <Card sx={styles.card}>
       <CardHeader
         sx={styles.header}
         avatar={
-          movie.toWatches ? (
+          isInMustWatches ? (
             <Avatar sx={styles.avatar}>
               <PlaylistAddIcon />
             </Avatar>

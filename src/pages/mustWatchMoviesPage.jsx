@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PageTemplate from "../components/templateUpcomingMovieListPage";
-import { MoviesContext } from "../contexts/moviesContext";
+import { useAuth } from "../contexts/AuthProvider";
 import { useQueries } from "react-query";
 import { getMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
@@ -8,6 +8,7 @@ import useFiltering from "../hooks/useFiltering";
 import MovieFilterUI, { titleFilter } from "../components/movieFilterUI";
 import RemoveFromMustWatches from "../components/cardIcons/removeFromMustWatches";
 import WriteReview from "../components/cardIcons/writeReview";
+import { getMustWatchMovies } from "../supabase/supabaseClient";
 
 const titleFiltering = {
   name: "title",
@@ -40,13 +41,29 @@ export const genreFiltering = {
 };
 
 const MustWatchMoviesPage = () => {
-  const { toWatches: movieIds } = useContext(MoviesContext);
+  const { user, setMustWatchMovies } = useAuth();
+  const [movieIds, setMovieIds] = useState([]);
+  const [refreshKey, setRefreshKey] = useState(0);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
-    [titleFiltering, genreFiltering,rateFiltering]
+    [titleFiltering, genreFiltering, rateFiltering]
   );
 
-  // Create an array of queries and run them in parallel.
+  useEffect(() => {
+    const fetchMustWatchMovies = async () => {
+      const { data, error } = await getMustWatchMovies(user.id);
+      if (error) {
+        console.error("Error!", error);
+      } else {
+        setMovieIds(data.map((entry) => entry.movie_id));
+      }
+    };
+
+    if (user) {
+      fetchMustWatchMovies();
+    }
+  }, [user, setMustWatchMovies, refreshKey]);
+
   const mustWatchMovieQueries = useQueries(
     movieIds.map((movieId) => {
       return {
@@ -55,19 +72,16 @@ const MustWatchMoviesPage = () => {
       };
     })
   );
-  // Check if any of the parallel queries is still loading.
+
   const isLoading = mustWatchMovieQueries.find((m) => m.isLoading === true);
 
   if (isLoading) {
     return <Spinner />;
   }
 
-  const allMustWatches = mustWatchMovieQueries.map((q) => q.data);
-  const displayMovies = allMustWatches
-    ? filterFunction(allMustWatches)
-    : [];
-
-  // const toDo = () => true;
+  const allmustWatch = mustWatchMovieQueries.map((q) => q.data);
+  const displayMovies =
+    allmustWatch && allmustWatch.length > 0 ? filterFunction(allmustWatch) : [];
 
   const changeFilterValues = (type, value) => {
     const changedFilter = { name: type, value: value };
@@ -83,13 +97,17 @@ const MustWatchMoviesPage = () => {
 
   return (
     <>
-            <PageTemplate
+      <PageTemplate
         title="Must Watch Movies"
         movies={displayMovies}
         action={(movie) => {
           return (
             <>
-              <RemoveFromMustWatches movie={movie} />
+              <RemoveFromMustWatches 
+                movie={movie}
+                refreshKey={refreshKey}
+                setRefreshKey={setRefreshKey}
+              />
               <WriteReview movie={movie} />
             </>
           );
