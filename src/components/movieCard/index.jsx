@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -11,9 +11,11 @@ import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Grid from "@mui/material/Grid";
 import img from "../../images/film-poster-placeholder.png";
+import { MoviesContext } from "../../contexts/moviesContext";
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
-import { MoviesContext } from "../../contexts/moviesContext";
+import { useAuth } from "../../contexts/AuthProvider";
+import { checkMovieInFavourites } from "../../supabase/supabaseClient";
 
 const styles = {
   card: { maxWidth: 345, borderRadius: 12 },
@@ -34,20 +36,27 @@ const styles = {
 };
 
 export default function MovieCard({ movie, action }) {
-  const { favourites, addToFavourites } = useContext(MoviesContext);
+  const { addToFavourites } = useContext(MoviesContext);
+  const { user } = useAuth();
+  const [isFavourite, setIsFavourite] = useState(false);
+  
+  useEffect(() => {
+    const fetchFavouriteStatus = async () => {
+      if (user) {
+        const isFav = await checkMovieInFavourites(user.id, movie.id);
+        setIsFavourite(isFav);
+      }
+    };
 
-  if (favourites.find((id) => id === movie.id)) {
-    movie.favourite = true;
-  } else {
-    movie.favourite = false;
-  }
+    fetchFavouriteStatus();
+  }, [user, movie.id]);
 
   return (
     <Card sx={styles.card}>
       <CardHeader
         sx={styles.header}
         avatar={
-          movie.favourite ? (
+          isFavourite ? (
             <Avatar sx={styles.avatar}>
               <FavoriteIcon />
             </Avatar>

@@ -7,15 +7,33 @@ export const useAuth = () => useContext(AuthContext);
 
 const login = (email, password) =>
   supabase.auth.signInWithPassword({ email, password });
-  const signOut = () => supabase.auth.signOut();
+
+const signOut = () => supabase.auth.signOut();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [auth, setAuth] = useState(false);
+  const [favouriteMovies, setFavouriteMovies] = useState([]);
 
-  useEffect(() => {
+useEffect(() => {
+  const handleSession = async (event, session) => {
+    const currentUser = session?.user ?? null;
+    setUser(currentUser);
+
+    if (currentUser) {
+      const { data: moviesData } = await supabase
+        .from("favourite_movies")
+        .select("*")
+        .eq("user_id", currentUser.id);
+
+      setFavouriteMovies(moviesData ?? []);
+    } else {
+      setFavouriteMovies([]);
+    }
+  };
+
     const fetchUser = async () => {
-      const currentUser = supabase.auth.user();
+      const currentUser = supabase.auth.session?.user;
       if (currentUser) {
         setUser(currentUser);
       } else if (event === "SIGNED_OUT") {
@@ -33,6 +51,7 @@ const AuthProvider = ({ children }) => {
       } else {
         setUser(null);
       }
+      handleSession(event, session);
     });
 
     return () => {
@@ -41,7 +60,15 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, signOut }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        signOut,
+        favouriteMovies,
+        setFavouriteMovies,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

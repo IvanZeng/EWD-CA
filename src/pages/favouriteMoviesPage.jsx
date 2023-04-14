@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PageTemplate from "../components/templateMovieListPage";
-import { MoviesContext } from "../contexts/moviesContext";
+import { useAuth } from "../contexts/AuthProvider";
 import { useQueries } from "react-query";
 import { getMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
@@ -8,6 +8,7 @@ import useFiltering from "../hooks/useFiltering";
 import MovieFilterUI, { titleFilter } from "../components/movieFilterUI";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
+import { getFavouriteMovies } from "../supabase/supabaseClient";
 
 const titleFiltering = {
   name: "title",
@@ -31,8 +32,6 @@ export const genreFiltering = {
   name: "genre",
   value: "0",
   condition: function (movie, value) {
-    // Is user selected genre in this movies's genre list? 
-    // Always true if selected genre ia All (0).
     const genreId = Number(value);
     const genre_ids = movie.genres.map((g) => g.id);
     return genreId > 0 ? genre_ids.includes(genreId) : true;
@@ -40,34 +39,48 @@ export const genreFiltering = {
 };
 
 const FavouriteMoviesPage = () => {
-  const { favourites: movieIds } = useContext(MoviesContext);
+  const { user, setFavouriteMovies } = useAuth();
+  const [movieIds, setMovieIds] = useState([]);
+  const [refreshKey, setRefreshKey] = useState(0);
+
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
-    [titleFiltering, genreFiltering,rateFiltering]
+    [titleFiltering, genreFiltering, rateFiltering]
   );
 
-    // Create an array of queries and run them in parallel.
-    const favouriteMovieQueries = useQueries(
-      movieIds.map((movieId) => {
-        return {
-          queryKey: ["movie", { id: movieId }],
-          queryFn: getMovie,
-        };
-      })
-    );
-    // Check if any of the parallel queries is still loading.
-    const isLoading = favouriteMovieQueries.find((m) => m.isLoading === true);
-  
-    if (isLoading) {
-      return <Spinner />;
+  useEffect(() => {
+    const fetchFavouriteMovies = async () => {
+      const { data, error } = await getFavouriteMovies(user.id);
+      if (error) {
+        console.error("Error fetching favourite movies:", error);
+      } else {
+        setMovieIds(data.map((entry) => entry.movie_id));
+      }
+    };
+
+    if (user) {
+      fetchFavouriteMovies();
     }
-  
-    const allFavourites = favouriteMovieQueries.map((q) => q.data);
-    const displayMovies = allFavourites
-      ? filterFunction(allFavourites)
-      : [];
-  
-    // const toDo = () => true;  
+  }, [user, setFavouriteMovies, refreshKey]);
+
+  const favouriteMovieQueries = useQueries(
+    movieIds.map((movieId) => {
+      return {
+        queryKey: ["movie", { id: movieId }],
+        queryFn: getMovie,
+      };
+    })
+  );
+
+  const isLoading = favouriteMovieQueries.find((m) => m.isLoading === true);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  const allFavourites = favouriteMovieQueries.map((q) => q.data);
+  const displayMovies =
+    allFavourites && allFavourites.length > 0 ? filterFunction(allFavourites) : [];
 
   const changeFilterValues = (type, value) => {
     const changedFilter = { name: type, value: value };
@@ -76,7 +89,7 @@ const FavouriteMoviesPage = () => {
     } else if (type === "genre") {
       setFilterValues([filterValues[0], changedFilter, filterValues[2]]);
     } else if (type === "rating") {
-      console.log([filterValues[0], filterValues[1], changedFilter])
+      console.log([filterValues[0], filterValues[1], changedFilter]);
       setFilterValues([filterValues[0], filterValues[1], changedFilter]);
     }
   };
@@ -89,7 +102,11 @@ const FavouriteMoviesPage = () => {
         action={(movie) => {
           return (
             <>
-              <RemoveFromFavourites movie={movie} />
+              <RemoveFromFavourites
+                movie={movie}
+                refreshKey={refreshKey}
+                setRefreshKey={setRefreshKey}
+              />
               <WriteReview movie={movie} />
             </>
           );
