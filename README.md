@@ -126,21 +126,20 @@ __Name:__ [Qi Zeng]
 
 ## Authentication.
 
-[Unprotected]
-+ /register - User register with supabase
-+ /login    - User login with supabase
-[Protected]
-+ /movies/nowplaying - Displays now playing movie list.
-+ /movies/toprated - Displays top rated movie list.
-+ /movies/mustWatches - List must watch moives for each distinct user.
-+ /reviews/form - Adding review.
-+ /movies/favourites - List favourite moives for each distinct user.
-+ /movies/upcoming - Displays upcoming movies
-+ /movies/:id - Detail of a movie by id.
-+ /reviews/:id - Detail of a review by id.
-+ /actors - Displays popular actors list.
-+ /actors/:id - Detail of a actor by id.
-+ /actors/favourites  - List favourite actors for each distinct user.
++ /register (Unprotected) - User register with supabase
++ /login (Unprotected) - User login with supabase
++
++ /movies/nowplaying (protected) - Displays now playing movie list.
++ /movies/toprated (protected) - Displays top rated movie list.
++ /movies/mustWatches (protected) - List must watch moives for each distinct user.
++ /reviews/form (protected) - Adding review.
++ /movies/favourites (protected) - List favourite moives for each distinct user.
++ /movies/upcoming (protected) - Displays upcoming movies
++ /movies/:id (protected) - Detail of a movie by id.
++ /reviews/:id (protected) - Detail of a review by id.
++ /actors (protected) - Displays popular actors list.
++ /actors/:id (protected) - Detail of a actor by id.
++ /actors/favourites (protected) - List favourite actors for each distinct user.
 
 #### Protected features (if relevant)
 
